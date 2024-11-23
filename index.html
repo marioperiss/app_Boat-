@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>freetime-boat</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="connectionStatus" class="connection-status">Connesso</div>
+<!-- contenitore lat e log -->
+<div id="infoDisplay">
+  <p>Latitudine: <span id="latitude"></span></p>
+  <p>Longitudine: <span id="longitude"></span></p>
+</div>
+<!-- bussola piu velocita della barca piu direzione bussola pio fondale basso -->
+<div id="infoContainer">
+  <div id="compass">Bussola: <span id="compassHeading"></span>°</div>
+  <div id="speed">Velocità: <span id="boatSpeed"></span> nodi</div>
+  <div id="compass_a">
+      <div id="needle"></div>
+      <div id="direction">Direzione: <span id="compassDirection"></span></div>
+  </div>
+  <div class="toggle-container">
+    <label class="toggle">
+      <input type="checkbox" id="toggle-checkbox">
+      <span class="slider">
+        <span class="toggle-text">----OFF</span>
+      </span>
+    </label>
+    <span class="toggle-label">Allert fondale</span>
+  </div>
+  <!-- Aggiungi l'area per il messaggio dell'allerta -->
+  <div id="depthStatus" class="alert-message">Attenzione: Fondale BASSO</div>
+</div>
+
+<script>
+  const checkbox = document.getElementById('toggle-checkbox');
+  const toggleText = document.querySelector('.toggle-text');
+  const depthStatus = document.getElementById('depthStatus');
+
+  checkbox.addEventListener('change', function () {
+    toggleText.textContent = checkbox.checked ? 'ON' : 'OFF';
+    if (checkbox.checked) {
+      depthStatus.textContent = "Attenzione: Fondale basso!";
+      depthStatus.style.backgroundColor = "red";
+    } else {
+      depthStatus.textContent = "Fondale sicuro.";
+      depthStatus.style.backgroundColor = "green";
+    }
+  });
+</script>
+
+<!-- fine -->
+
+  <!-- Contenitore per i bottoni -->
+  <div class="button-container">
+    <button id="weatherButton">
+      <img src="https://img.icons8.com/ios-filled/50/sun.png" alt="Previsioni del tempo">
+    </button>
+    <button id="destinationSearchButton">
+      <img src="https://img.icons8.com/ios-filled/50/search.png" alt="Cerca Destinazione">
+    </button>
+    <button id="destinationButton">
+      <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Destinazione">
+    </button>
+    <button id="emergencyButton">
+      <img src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Numeri di Emergenza">
+    </button>
+    <button id="closeAppButton">
+      <img src="https://img.icons8.com/ios-filled/50/multiply.png" alt="Chiudi App">
+    </button>
+  </div>
+
+  <!-- Form per l'inserimento della destinazione -->
+  <div id="destinationFormContainer">
+    <div id="destinationForm">
+      <input type="text" id="destination" placeholder="Inserisci la destinazione">
+      <button id="saveRouteButton">Salva Rotta</button>
+    </div>
+  </div>
+
+  <!-- Modale per le previsioni del tempo -->
+  <div id="weatherModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="closeWeatherModal">&times;</span>
+      <iframe width="800" height="550" src="https://embed.windy.com/embed2.html?lat=45.5&lon=13.0&detailLat=45.5&detailLon=13.0&width=750&height=450&zoom=6&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1" frameborder="0">
+
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Modale per i numeri di emergenza -->
+  <div id="emergencyModal" class="modal" style="display: none;">
+    <div class="modal-content_a">
+      <span class="close" id="closeEmergencyModal">&times;</span>
+      <h3>Numeri di Emergenza in Mare</h3>
+      <p>Guardia Costiera: 1530</p>
+      <p>Emergenza Generale: 112</p>
+      <p>Soccorso in Mare: 115</p>
+    </div>
+  </div>
+  <script>
+// Riferimenti agli elementi HTML
+const emergencyButton = document.getElementById('emergencyButton');
+const emergencyModal = document.getElementById('emergencyModal');
+const closeEmergencyModal = document.getElementById('closeEmergencyModal');
+
+// Apre il modale quando si clicca sul bottone
+emergencyButton.addEventListener('click', () => {
+  emergencyModal.style.display = 'block';
+});
+
+// Chiude il modale quando si clicca sulla "X"
+closeEmergencyModal.addEventListener('click', () => {
+  emergencyModal.style.display = 'none';
+});
+
+// Chiude il modale quando si clicca fuori dal contenuto
+window.addEventListener('click', (event) => {
+  if (event.target === emergencyModal) {
+    emergencyModal.style.display = 'none';
+  }
+});
+  </script>
+
+  <!-- Modale per i dettagli della destinazione -->
+  <div id="infoModal" class="modal" style="display: none;">
+    <div class="modal-content_b">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Dettagli della Destinazione</h3>
+      <p>Destinazione: <span id="modalDestination"></span></p>
+      <p>Distanza: <span id="modalDistance"></span> miglia nautiche</p>
+      <p>Tempo stimato di arrivo (ETA): <span id="modalEta"></span></p>
+      <p>Velocità del vento: <span id="modalWind"></span></p>
+    </div>
+  </div>
+  <!-- script chiudi app -->
+   <script>
+    // Riferimento al bottone "Chiudi App"
+const closeAppButton = document.getElementById('closeAppButton');
+
+// Funzione per simulare la chiusura della pagina
+closeAppButton.addEventListener('click', () => {
+  const confirmation = confirm("Sei sicuro di voler chiudere questa pagina?");
+  if (confirmation) {
+    // Simula la chiusura della pagina con un messaggio
+    alert("Pagina chiusa! Usa il pulsante del browser per uscire.");
+    
+    // Prova a chiudere la pagina (funziona solo se aperta con window.open)
+    window.close();
+  }
+});
+</script>
+  <script src="script.js"></script>
+  <script src="alertCosta.js"></script>
+  <script src="direzione.js"></script>
+</body>
+</html>

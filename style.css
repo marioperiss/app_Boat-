@@ -1,0 +1,420 @@
+/* Stili per la mappa */
+#map {
+  width: 100%;
+  height: 100vh;  /* Usa l'intera altezza del viewport */
+  z-index: 1;
+}
+
+/* Stili per lo stato della connessione */
+.connection-status {
+  position: absolute;
+  top: 10px;
+  left: 91%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 55px;
+  font-weight: bold;
+  z-index: 10;
+  -webkit-border-radius: 55px;
+  -moz-border-radius: 55px;
+  -ms-border-radius: 55px;
+  -o-border-radius: 55px;
+}
+.online {
+  color: #fff;
+  background: #28a745; /* Verde */
+}
+.offline {
+  color: #fff;
+  background: #dc3545; /* Rosso */
+}
+
+/* Stili per i bottoni */
+.button-container {
+  position: absolute;
+  top: 120px; /* Posizionato a 150px dall'alto */
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Spazio tra i bottoni */
+  z-index: 100;
+}
+.button-container button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Rende i bottoni rotondi */
+  border: none;
+  background-color: #56b461; /* Colore di sfondo dei bottoni */
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 100;
+  transition: background-color 0.3s;
+}
+.button-container button img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%; /* Rende anche le immagini rotonde */
+}
+.button-container button:hover {
+  background-color: #3e8e41; /* Colore di sfondo al passaggio del mouse */
+}
+
+/* Stili per il form a scomparsa */
+#destinationFormContainer {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  display: none;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 5dvh;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  -webkit-border-radius: 5dvh;
+  -moz-border-radius: 5dvh;
+  -ms-border-radius: 5dvh;
+  -o-border-radius: 5dvh;
+}
+#destinationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#destinationForm input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+#destinationForm button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #56b461;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#destinationForm button:hover {
+  background-color: #3e8e41;
+}
+
+/* Stili per il modal PREVISIONI DEL TEMPO  */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.modal-content {
+  background: rgb(255, 255, 255); /* Background trasparente */
+  margin: 10% auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 800px; /* Dimensione massima aumentata */
+  text-align: left;
+}
+.modal .close {
+  color: #000;
+  float: right;
+  font-size: 48px;
+  font-weight: bold;
+}
+.modal .close:hover,
+.modal .close:focus {
+  color: #aaa;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Stili per il frame delle previsioni del tempo */
+#weatherModal .modal-content {
+  background: rgba(255, 255, 255);  /* Trasparenza al 100% */
+}
+
+/* funzione per lat e lon  */
+#infoDisplay {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #67a85e;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 55px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  z-index: 9999;
+  -webkit-border-radius: 55px;
+  -moz-border-radius: 55px;
+  -ms-border-radius: 55px;
+  -o-border-radius: 55px;
+}
+
+#infoDisplay p {
+  margin: 5px 0;
+}
+
+/* fine lat e log */ 
+
+/* bussola piu velocita barca piu giroscopio bussola */ 
+#infoContainer {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /*Trasparente*/
+  padding: 30px;  /*Aggiunto più padding permigliorare la spaziatura interna*/
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);   /*Correzione dell'ombra*/
+  z-index: 9999;
+  text-align: left;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+}
+
+#infoContainer > div {
+  margin-bottom: 40px; /* Distanza tra le funzioni */
+}
+
+#compass_b {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto; /* Centrato all'interno del contenitore */
+  border: 5px solid #000;
+  border-radius: 50%;
+}
+
+#needle {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background-color: red;
+  left: 50%;
+  transform-origin: bottom;
+  transform: rotate(0deg);
+}/* fine */
+
+/* fondale basso  Container principale */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Stile del contenitore del toggle */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 70px; /* Più largo per contenere il testo */
+  height: 30px;
+}
+
+/* Nasconde la checkbox */
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 30px;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Cerchio interno dello slider */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+/* Testo dentro il toggle */
+.toggle-text {
+  z-index: 1; /* Sopra il cerchio bianco */
+}
+
+/* Stato attivo */
+.toggle input:checked + .slider {
+  background-color: #4caf50;
+}
+
+.toggle input:checked + .slider:before {
+  transform: translateX(40px); /* Sposta il cerchio a destra */
+}
+
+.toggle input:checked + .slider .toggle-text {
+  content: "ON";
+}
+
+/* Testo accanto al toggle */
+.toggle-label {
+  cursor: pointer;
+}
+
+#depthStatus.green {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+#depthStatus.red {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-label {
+  margin-left: 10px;
+}
+#depthStatus {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+}
+
+#depthStatus.green {
+  background-color: green;
+}
+
+#depthStatus.red {
+  background-color: red;
+}
+/* fine fondale basso */
+/* direzione */
+#compass_a {
+  width: 200px;
+  height: 200px;
+  border: 5px solid black;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#needle {
+  width: 2px;
+  height: 100px;
+  background-color: red;
+  position: absolute;
+  top: 50px;
+  transform-origin: bottom center;
+}
+#direction {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+/* fine direzione */
+/* Stili per il modal form  */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.modal-content_b {
+  background: rgb(255, 255, 255); /* Background trasparente */
+  margin: 10% auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 300px; /* Dimensione massima aumentata */
+  text-align: left;
+}
+.modal .close {
+  color: #000;
+  float: right;
+  font-size: 48px;
+  font-weight: bold;
+}
+.modal .close:hover,
+.modal .close:focus {
+  color: #11ce31;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* fine form */
+/* Stili per il modal numeri utili  */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.modal-content_a {
+  background: rgb(255, 255, 255); /* Background trasparente */
+  margin: 10% auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: 40%; /* larghezza contenitore */
+  max-width: 300px; /* Dimensione massima aumentata */
+  text-align: left;
+}
+.modal .close {
+  color: #000;
+  float: right;
+  font-size: 48px;
+  font-weight: bold;
+}
+.modal .close:hover,
+.modal .close:focus {
+  color: #aaa;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* fine numeri utili */
